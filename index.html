@@ -1027,7 +1027,8 @@
                 for (let i = 0; i < currentCommand.length; i++) {
                     let charClass = '';
                     if (i < input.length) {
-                        charClass = input[i] === currentCommand[i] ? 'char-correct' : 'char-incorrect                    } else if (i === input.length) {
+                        charClass = input[i] === currentCommand[i] ? 'char-correct' : 'char-incorrect　
+                            } else if (i === input.length) {
                         charClass = 'char-current';
                     }
                     highlighted += `<span class="${charClass}">${currentCommand[i]}</span>`;
